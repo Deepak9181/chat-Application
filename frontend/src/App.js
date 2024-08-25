@@ -1,9 +1,11 @@
-import './App.css';
+import "./App.css";
+import Home from "./Components/Home";
+
 
 function App() {
   return (
-    <div className="App">
-        Hello
+    <div className="p-4 h-screen flex items-center justify-center">
+      <Home/>
     </div>
   );
 }
