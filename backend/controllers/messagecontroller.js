@@ -31,9 +31,7 @@ exports.sendMessage=async (req,res)=>{
 
         await Promise.all([conversation.save(), newMessage.save()]);
 
-        res.status(201).json({
-            newMessage
-        })
+        res.status(201).json(newMessage)
 
     }
     catch (error) {
@@ -55,7 +53,11 @@ exports.getMessage = async(req,res)=>{
             participants:{$all : [senderId,userToChatId]}
         }).populate("messages");
 
-        res.status(201).json(conversation.messages);
+        if (!conversation) return res.status(200).json([]);
+
+		const messages = conversation.messages;
+
+		res.status(200).json(messages);
 
     }
     catch (error) {

@@ -59,27 +59,23 @@ exports.login=async(req,res)=>{
         const user = await User.findOne({username});
 
         if(!user){
-            return res.status(400).json({
-                status:"Failed",
-                message:"Invalid username and Password"
-            })
+            return res.status(401).json({error:"Invalid username and Password"})
         }
 
         const hashpass = await bcyrpt.compare(password,user.password);
         // console.log(hashpass);
 
         if(!hashpass){
-            return res.status(400).json({
-                status:"Failed",
-                message:"Invalid username and Password"
-            })
+            return res.status(401).json({error:"Invalid username and Password"})
         }
         
         generatewebtoken(user._id,res); 
         
         res.status(201).json({
-            status:"Success",
-            message:"Login Successful"
+            id:user._id,
+            name:user.name,
+            username:user.username,
+            profilepic:user.profilepic
         })
 
     }
@@ -94,12 +90,10 @@ exports.login=async(req,res)=>{
 
 exports.logout=(req,res)=>{
     try{
-        res.cookie("jwt","",{maxAge:0});
-        res.status(201).json(
-            {
-                status:"success",
-                messgae:"logout successful"
-            })
+        res.cookie("jwtToken","",{maxAge:0});
+        res.status(201).json({
+            messgae:"logout successful"
+    })
     }
     catch(error){
         console.log("Internal Server Error:",error);

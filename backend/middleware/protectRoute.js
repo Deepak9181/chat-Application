@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const protectroute = async(req,res,next)=>{
     try{
         const token = req.cookies.jwtToken;
+        // console.log(token);
 
         if(!token){
             return res.status(401).json({error:"Unauthorized - No token Provided"})

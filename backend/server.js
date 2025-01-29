@@ -6,12 +6,13 @@ const authRoute = require("./Routes/authroute");
 const connectToDb = require('./Database');
 const messageRoute = require('./Routes/messageRoute')
 const userRoute = require('./Routes/userRoute')
-
+const cors = require('cors');
 
 dotenv.config({path:'./config.env'})
 
-const port =process.env.PORT || 5000
+const port =process.env.PORT || 5000;
 
+app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 app.use("/api/auth",authRoute);
 app.use("/api/messages",messageRoute);
 app.use("/api/users",userRoute);
+
 
 app.listen(port,()=>{
     connectToDb();

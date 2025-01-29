@@ -1,6 +1,35 @@
+import { useState } from "react";
 import GenderCheckbox from "./GenderCheckbox";
+import useSignup from "../Hooks/useSignup";
 
 const SignUp = () => {
+	
+	const {signup} = useSignup();
+
+	const [signData,setsignData] = useState({
+		name:"",
+		username:"",
+		password:"",
+		gender:"",
+		confirm:""
+	});
+
+	const handlechange =(e)=>{
+		setsignData({...signData,[e.target.name]:e.target.value})
+	}
+
+	const handleCheckBox =(gender)=>{
+		setsignData({...signData,gender});
+	}
+
+
+	const handlesignUp= async(event)=>{
+		event.preventDefault();
+		signup(signData);
+	}
+
+
+
 	return (
 		<div className='flex flex-col items-center justify-center min-w-96 mx-auto'>
 			<div className='w-full p-6 rounded-lg shadow-md bg-gray-400 bg-clip-padding backdrop-filter backdrop-blur-lg bg-opacity-0'>
@@ -8,19 +37,19 @@ const SignUp = () => {
 					Sign Up <span className='text-blue-500'> ChatApp</span>
 				</h1>
 
-				<form>
+				<form onSubmit={handlesignUp}>
 					<div>
 						<label className='label p-2'>
 							<span className='text-base label-text'>Full Name</span>
 						</label>
-						<input type='text' placeholder='John Doe' className='w-full input input-bordered  h-10' />
+						<input type='text' name="name" placeholder='Enter your Full Name' className='w-full input input-bordered  h-10' value={signData.name} onChange={handlechange} />
 					</div>
 
 					<div>
 						<label className='label p-2 '>
 							<span className='text-base label-text'>Username</span>
 						</label>
-						<input type='text' placeholder='johndoe' className='w-full input input-bordered h-10' />
+						<input type='text' name="username" placeholder='Enter your Username' className='w-full input input-bordered h-10'  value={signData.username} onChange={handlechange} />
 					</div>
 
 					<div>
@@ -30,7 +59,10 @@ const SignUp = () => {
 						<input
 							type='password'
 							placeholder='Enter Password'
+							name="password"
 							className='w-full input input-bordered h-10'
+							value={signData.password}
+							onChange={handlechange}
 						/>
 					</div>
 
@@ -40,16 +72,19 @@ const SignUp = () => {
 						</label>
 						<input
 							type='password'
+							name="confirm"
 							placeholder='Confirm Password'
 							className='w-full input input-bordered h-10'
+							value={signData.confirm}
+							onChange={handlechange}
 						/>
 					</div>
 
-					<GenderCheckbox />
+					<GenderCheckbox onChangeCheckBox={handleCheckBox} selectedGender={signData.gender}/>
 
-					<a className='text-sm hover:underline hover:text-blue-600 mt-2 inline-block' href='#'>
+					<li className='text-sm hover:underline hover:text-blue-600 mt-2 inline-block' href='#'>
 						Already have an account?
-					</a>
+					</li>
 
 					<div>
 						<button className='btn btn-block btn-sm mt-2 border border-slate-700'>Sign Up</button>
